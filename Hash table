@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define HT_SIZE 10
+
+struct Employee {
+    int key;
+    char name[30];
+};
+
+struct Hashtable {
+    struct Employee* employees[HT_SIZE];
+};
+
+int hash(int key, int m) {
+    return key % m;
+}
+
+void insert(struct Hashtable* ht, struct Employee* emp, int m) {
+    int index = hash(emp->key, m);
+    while (ht->employees[index] != NULL) {
+        index = (index + 1) % m;
+    }
+    ht->employees[index] = emp;
+}
+
+void display(struct Hashtable* ht, int m) {
+    printf("Hash Table:\n");
+    for (int i = 0; i < m; i++) {
+        if (ht->employees[i] != NULL) {
+            printf("Index %d: Key = %d, Name = %s\n", i, ht->employees[i]->key, ht->employees[i]->name);
+        } else {
+            printf("Index %d: Empty\n", i);
+        }
+    }
+}
+
+int main() {
+    struct Hashtable ht;
+    int m = HT_SIZE;
+
+    for (int i = 0; i < m; i++) {
+        ht.employees[i] = NULL;
+    }
+
+    struct Employee e1 = {1000, "Alice"};
+    struct Employee e2 = {1001, "Bob"};
+    struct Employee e3 = {1002, "Charlie"};
+    struct Employee e4 = {1003, "David"};
+
+    insert(&ht, &e1, m);
+    insert(&ht, &e2, m);
+    insert(&ht, &e3, m);
+    insert(&ht, &e4, m);
+
+    display(&ht, m);
+
+    return 0;
+}
