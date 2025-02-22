@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 5
+
+char cqueue[MAX]; 
+int front = 0, rear = -1, count = 0;
+
+void insert(char ele) {
+    if (count == MAX) printf("Queue is Full!\n");
+    else cqueue[rear = (rear + 1) % MAX] = ele, count++;
+}
+
+void delete() {
+    if (count == 0) printf("Queue is Empty!\n");
+    else printf("Deleted: %c\n", cqueue[front]), front = (front + 1) % MAX, count--;
+}
+
+void display() {
+    if (count == 0) printf("Queue is Empty!\n");
+    else {
+        printf("Queue: ");
+        for (int i = 0; i < count; i++) printf("%c ", cqueue[(front + i) % MAX]);
+        printf("\n");
+    }
+}
+
+int main() {
+    int ch; char ele;
+    while (1) {
+        printf("\n1.Insert 2.Delete 3.Display 4.Exit\nChoice: ");
+        scanf(" %d", &ch);
+        if (ch == 4) break;
+        if (ch == 1) printf("Enter element: "), scanf(" %c", &ele), insert(ele);
+        else if (ch == 2) delete();
+        else if (ch == 3) display();
+        else printf("Invalid choice!\n");
+    }
+    return 0;
+}
