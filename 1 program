@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() 
+{ 
+    int *p, n, ele, ch, i, pos;
+    
+    printf("Enter number of elements to create an Array:\t"); 
+    scanf("%d", &n); 
+    
+    p = (int *)malloc(n * sizeof(int)); // Allocate memory
+    if (p == NULL) {
+        printf("Memory allocation failed.\n");
+        return 1;
+    }
+
+    printf("Dynamic Array Created.\n"); 
+    printf("Enter %d elements:\n", n); 
+    
+    for (i = 0; i < n; i++) { 
+        scanf("%d", &p[i]); 
+    }
+
+    while (1) 
+    { 
+        printf("\n1. Insert\n2. Delete\n3. Display\n4. Exit\nEnter your choice:\t"); 
+        scanf("%d", &ch); 
+        
+        switch (ch) 
+        { 
+            case 1: 
+                printf("\nEnter element & position (0 to %d) to insert:\t", n);
+                scanf("%d%d", &ele, &pos); 
+                
+                if (pos < 0 || pos > n) {
+                    printf("Invalid position!\n");
+                    break;
+                }
+
+                int *temp = (int *)realloc(p, (n + 1) * sizeof(int)); 
+                if (temp == NULL) {
+                    printf("Memory reallocation failed.\n");
+                    break;
+                }
+                p = temp;
+                
+                for (i = n; i > pos; i--) { 
+                    p[i] = p[i - 1]; 
+                } 
+                p[pos] = ele; 
+                n++;
+                break; 
+            
+            case 2: 
+                printf("Enter position (0 to %d) to delete:\t", n - 1);
+                scanf("%d", &pos); 
+                
+                if (pos < 0 || pos >= n) {
+                    printf("Invalid position!\n");
+                    break;
+                }
+
+                for (i = pos; i < n - 1; i++) { 
+                    p[i] = p[i + 1]; 
+                }
+                n--;
+                
+                temp = (int *)realloc(p, n * sizeof(int));
+                if (temp != NULL) { // Avoid freeing if realloc fails
+                    p = temp;
+                }
+                break; 
+            
+            case 3: 
+                printf("\nArray Elements Are:\n"); 
+                for (i = 0; i < n; i++) { 
+                    printf("%d\t", p[i]); 
+                } 
+                printf("\n");
+                break; 
+            
+            case 4: 
+                free(p); // Free allocated memory before exiting
+                exit(0); 
+            
+            default:
+                printf("Invalid choice! Please enter a valid option.\n");
+        } 
+    } 
+
+    return 0; 
+}
